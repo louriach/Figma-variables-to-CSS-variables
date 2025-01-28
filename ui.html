@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Figma Plugin</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      padding: 20px;
+      margin: 0;
+      text-align: center;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .shimmer {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 2s infinite linear;
+    }
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+      100% {
+        background-position: 200% 0;
+      }
+    }
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      background-color: #f4f4f4;
+      padding: 15px;
+      max-height: 300px;
+      overflow-y: auto;
+      text-align: left;
+      transition: all 0.3s ease;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      font-size: 13px;
+      padding: 6px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    p {
+      margin-top: 20px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }   
+
+    .alias-pill {
+      background: #f0f0f0;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      padding: 2px 6px;
+    }
+
+    .css-output {
+  background-color: #f5f5f5;  /* Light grey background */
+  padding: 10px;  /* Padding around the text */
+  border-radius: 5px;  /* Rounded corners */
+  font-family: "Courier New", monospace;  /* Monospace font for better code presentation */
+  white-space: pre-wrap;  /* Allow wrapping of long lines */
+  word-wrap: break-word;  /* Ensure long lines break correctly */
+  max-height: 400px;  /* Optional: Set a max height */
+  overflow-y: auto;  /* Optional: Allow scrolling if content overflows */
+}
+  </style>
+</head>
+<body>
+
+  <div id="pluginUI">
+    <div id="variablesContainer"></div> <!-- For holding all tables -->
+    <div id="cssOutput"></div>
+  </div>
+
+  <script>
+    const cssOutput = document.getElementById("cssOutput");
+const variablesContainer = document.getElementById("variablesContainer");
+
+let scannedVariables = [];
+let collections = [];
+
+// Helper function to format variable names
+function formatVariableName(name) {
+  return name.replace(/\//g, "-");
+}
+
+// Function to convert variables to CSS
+function convertToCSS(variables) {
+  const groupedByMode = {};
+
+  variables.forEach((variable) => {
+    const formattedName = formatVariableName(variable.name);
+    if (!groupedByMode[variable.mode]) {
+      groupedByMode[variable.mode] = {};
+    }
+
+    // If the variable has an alias, use the alias instead of rgba value
+    const value = variable.aliasName ? variable.aliasName : variable.rgba;
+    
+    groupedByMode[variable.mode][formattedName] = value;
+  });
+
+  let cssString = "";
+  const modes = Object.keys(groupedByMode);
+  const rootMode = modes[0];
+
+  if (groupedByMode[rootMode]) {
+    cssString += `:root {\n`;
+    const defaultMode = groupedByMode[rootMode];
+    for (const [name, value] of Object.entries(defaultMode)) {
+      cssString += `  --${name.toLowerCase().replace(/\s+/g, "-")}: ${value};\n`;
+    }
+    cssString += `}\n\n`;
+  }
+
+  modes.slice(1).forEach((mode) => {
+    cssString += `[data-theme="${mode.toLowerCase()}"] {\n`;
+    for (const [name, value] of Object.entries(groupedByMode[mode])) {
+      cssString += `  --${name.toLowerCase().replace(/\s+/g, "-")}: ${value};\n`;
+    }
+    cssString += `}\n\n`;
+  });
+
+  // Create the <pre> element with the class "css-output"
+  const cssOutput = document.createElement("pre");
+  cssOutput.classList.add("css-output");
+  cssOutput.textContent = cssString;
+
+  // Append the <pre> element to the variablesContainer
+  variablesContainer.appendChild(cssOutput);
+}
+
+// Request collections when the UI loads
+window.onload = () => {
+  parent.postMessage({ pluginMessage: { type: "get-collections" } }, "*");
+  parent.postMessage({ pluginMessage: { type: "scan-file" } }, "*");
+};
+
+// Handle messages from the plugin
+window.onmessage = (event) => {
+  const msg = event.data.pluginMessage;
+
+  if (msg.type === "scan-results") {
+    console.log("Received variables from plugin:", msg.variables);
+
+    // Create a lookup map for collections by ID
+    const collectionsById = collections.reduce((acc, collection) => {
+      acc[collection.id] = collection.name;
+      return acc;
+    }, {});
+
+    // Format variables received from the plugin, using the collection name from the lookup
+    scannedVariables = msg.variables.map((variable) => {
+      const collectionName = collectionsById[variable.variableCollectionId] || "Default Collection";
+      return {
+        name: variable.name || "Unnamed Variable",
+        rgba: variable.rgba,
+        mode: variable.modes[0] || "Default",
+        collection: collectionName, // Use the correct collection name here
+        variableCollectionId: variable.variableCollectionId,
+        aliasName: variable.aliasName, // Store the aliasName
+      };
+    });
+
+    console.log("Formatted variables:", scannedVariables);
+
+    // Display formatted variables table
+    displayRawVariablesTable(scannedVariables, msg.modes);
+  }
+
+  if (msg.type === "collections") {
+    console.log("Received collections:", msg.collections);
+    collections = msg.collections;
+  }
+};
+
+// Function to display formatted variables in the main table
+function displayRawVariablesTable(variables, allModes) {
+  // Group variables by collection
+  const collectionsMap = {};
+
+  variables.forEach((variable) => {
+    if (!collectionsMap[variable.collection]) {
+      collectionsMap[variable.collection] = [];
+    }
+    collectionsMap[variable.collection].push(variable);
+  });
+
+  // For each collection, create a new table
+  for (const collection in collectionsMap) {
+    const collectionTable = document.createElement("table");
+    collectionTable.id = `table-${collection}`;
+
+    // Create a table header
+    const tableHeader = document.createElement("thead");
+    const headerRow = document.createElement("tr");
+
+    // Add the first header column for "Variable Name" and "Collection"
+    const nameHeader = document.createElement("th");
+    nameHeader.textContent = "Variable Name";
+    headerRow.appendChild(nameHeader);
+
+    const collectionHeader = document.createElement("th");
+    collectionHeader.textContent = "Collection";
+    headerRow.appendChild(collectionHeader);
+
+    // Identify unique modes across all variables for this collection
+    const modesSet = new Set();
+    collectionsMap[collection].forEach((variable) => {
+      if (variable.mode) {
+        modesSet.add(variable.mode);
+      }
+    });
+
+    // Convert the set of modes to an array for the current collection
+    const collectionModes = Array.from(modesSet);
+
+    // Add a header column for each mode
+    collectionModes.forEach((mode) => {
+      const modeHeader = document.createElement("th");
+      modeHeader.textContent = mode;
+      headerRow.appendChild(modeHeader);
+    });
+
+    tableHeader.appendChild(headerRow);
+    collectionTable.appendChild(tableHeader);
+
+    // Create a table body
+    const tableBody = document.createElement("tbody");
+    collectionTable.appendChild(tableBody);
+
+    // Create a map to store each variable by name (so it only appears once)
+    const variableRows = {};
+
+    collectionsMap[collection].forEach((variable) => {
+      if (!variableRows[variable.name]) {
+        variableRows[variable.name] = {
+          name: variable.name,
+          collection: variable.collection,
+          modes: {}
+        };
+      }
+
+      // Store the value of the variable for the correct mode
+      variableRows[variable.name].modes[variable.mode] = variable;
+    });
+
+    // Now loop through the variableRows map and create a row for each variable
+    Object.values(variableRows).forEach((variable) => {
+      const row = document.createElement("tr");
+
+      // Create a cell for the variable name
+      const nameCell = document.createElement("td");
+      nameCell.textContent = variable.name;
+      row.appendChild(nameCell);
+
+      // Create a cell for the collection name
+      const collectionCell = document.createElement("td");
+      collectionCell.textContent = variable.collection;
+      row.appendChild(collectionCell);
+
+      // Create a cell for each mode
+      collectionModes.forEach((mode) => {
+        const modeCell = document.createElement("td");
+
+        // Check if the current variable has a value for the current mode
+        const modeVariable = variable.modes[mode];
+
+        if (modeVariable) {
+          // Check if the variable has an alias for this mode
+          if (modeVariable.aliasName) {
+            // Show alias name instead of RGBA, wrapped in a span with "alias-pill" class
+            const aliasSpan = document.createElement("span");
+            aliasSpan.classList.add("alias-pill");
+            aliasSpan.textContent = modeVariable.aliasName;
+            modeCell.appendChild(aliasSpan);
+          } else {
+            // Otherwise, show the RGBA value
+            const colorSquare = document.createElement("span");
+            colorSquare.style.display = "inline-block";
+            colorSquare.style.width = "12px";
+            colorSquare.style.height = "12px";
+            colorSquare.style.backgroundColor = modeVariable.rgba;
+
+            const valueText = document.createElement("span");
+            valueText.textContent = modeVariable.rgba;
+
+            // Append the color square and the value text
+            modeCell.appendChild(colorSquare);
+            modeCell.appendChild(document.createTextNode(" "));
+            modeCell.appendChild(valueText);
+          }
+        } else {
+          modeCell.textContent = "N/A";  // Display "N/A" if the variable doesn't belong to this mode
+        }
+
+        row.appendChild(modeCell);
+      });
+
+      tableBody.appendChild(row);
+    });
+
+    // Append the created table to the variablesContainer after it's fully constructed
+    variablesContainer.appendChild(collectionTable);
+  }
+
+  // Create the "Convert to CSS" button if it doesn't exist already
+  let convertToCSSButton = document.getElementById("convertToCSSButton");
+  if (!convertToCSSButton) {
+    convertToCSSButton = document.createElement("button");
+    convertToCSSButton.id = "convertToCSSButton";
+    convertToCSSButton.textContent = "Convert to CSS";
+    convertToCSSButton.addEventListener("click", () => {
+      convertToCSS(variables);
+    });
+    variablesContainer.appendChild(convertToCSSButton);
+  }
+
+  // Display the CSS output container
+  if (!cssOutput) {
+    const newCssOutput = document.createElement("pre");
+    newCssOutput.id = "cssOutput";
+    variablesContainer.appendChild(newCssOutput);
+  }
+}
+    </script>
+</body>
+</html>
