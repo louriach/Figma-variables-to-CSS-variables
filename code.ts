@@ -185,4 +185,4 @@ figma.ui.onmessage = async (msg) => {
 };
 
 // Show the UI with specified dimensions
-figma.showUI(__html__, { width: 500, height: 500 });
+figma.showUI(__html__, { width: 768, height: 500 });

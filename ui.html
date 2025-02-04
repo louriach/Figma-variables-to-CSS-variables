@@ -4,39 +4,82 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Figma Plugin</title>
-  <link rel="stylesheet" href="styles.css">
   <style>
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
     body {
-      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      color: #031B29;
+      font-family: Inter, sans-serif;
       font-size: 13px;
-      padding: 20px;
+      padding: 4px;
       margin: 0;
       text-align: center;
     }
     button {
-      background-color: #28a745;
-      color: white;
-      border: none;
-      padding: 15px 30px;
-      border-radius: 5px;
+      /* background: linear-gradient(180deg, #06A9C6 0%, #07C3A8 100%); */
+      /* background: linear-gradient(0deg, #0691AA 0%, #05879F 11.11%, #047E94 22.22%, #037488 33.33%, #026A7D 44.44%, #026071 55.56%, #015665 66.67%, #014C5A 77.78%, #00424E 88.89%, #003842 100%);
+      background: linear-gradient(0deg, #0ABCDB 0%, #0BB1D8 11.11%, #0DA5D6 22.22%, #0E9BD4 33.33%, #0F90D1 44.44%, #1186CF 55.56%, #127DCC 66.67%, #1374CA 77.78%, #156BC7 88.89%, #1662C5 100%); */
+      background: linear-gradient(white, white) padding-box, linear-gradient(to right, #06A9C6, #003842) border-box;
+      border: 2px solid transparent;
+      box-shadow: 0 2px 2px rgba(0,0,0,.1), 0 2px 8px rgba(0,0,0,.1);
+      color: #003842;
+      font-weight: 400;
+      padding: 8px 12px;
+      border-radius: 6px;
       cursor: pointer;
-      margin-bottom: 20px;
+      letter-spacing: .5px;
     }
     button:hover {
       background-color: #218838;
-    }
-    .shimmer {
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-      background-size: 200% 100%;
-      animation: shimmer 2s infinite linear;
-    }
-    @keyframes shimmer {
-      0% {
-        background-position: -200% 0;
-      }
-      100% {
-        background-position: 200% 0;
-      }
     }
     pre {
       white-space: pre-wrap;
@@ -49,24 +92,60 @@
       transition: all 0.3s ease;
     }
     table {
+      background-color: white;
+      border: 1px solid rgba(0,0,0,.2);
+      box-shadow: 0 2px 2px rgba(0,0,0,.05), 0 2px 8px rgba(0,0,0,.025);      
+      overflow: hidden;
       width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
     }
     th, td {
-      border: 1px solid #ddd;
-      font-size: 13px;
-      padding: 6px;
+      border: 1px solid #eee;
+      font-size: 11px;
+      padding: 9px;
       text-align: left;
     }
     th {
       background-color: #f4f4f4;
+      font-weight: 600;
     }
-    p {
-      margin-top: 20px;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-    }   
+
+    td {
+      vertical-align: middle;
+    }
+
+    td span:first-child {
+      border: 1px solid rgba(0,0,0,.1);
+      border-radius: 2px;
+    }
+
+    #variablesContainer {
+      display: flex;
+      gap: 16px;
+    }
+
+    .collection-wrapper {
+      border-radius: 6px;
+      flex: 1;
+      margin-bottom: 16px;
+    }
+
+    .collection-wrapper:last-child {
+      margin-bottom: 0;
+    }
+
+    .collection-wrapper h3 {
+      background: rgba(21, 107, 199, 0.1);
+      border-radius: 6px;
+      color: #0D498A;
+      padding: 8px;
+    }
+
+    .table-wrapper {
+      border-radius: 6px;
+      box-shadow: 0px 2px 2px rgba(0,0,0,.03), 0px 2px 6px rgba(0,0,0,.03);
+      max-height: 220px;
+      overflow: scroll;
+    }    
 
     .alias-pill {
       background: #f0f0f0;
@@ -75,7 +154,83 @@
       padding: 2px 6px;
     }
 
-    .css-output {
+    .gradient {
+      bottom: 0;
+      left: 0;
+      position: fixed;
+      right: 0;
+      top: 0;
+      z-index: -1;
+    }
+
+    .no-collections {
+      background: rgba(21, 107, 199, 0.1);
+      border-radius: 6px;
+      color: #0D498A;
+      padding: 8px;
+    }
+
+    .section {
+      background: rgba(255,255,255,.5);
+      border: 1px solid rgba(0,0,0,.1);
+      border-radius: 9px;
+      margin-bottom: 4px;
+      padding: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .radio-section {
+      background-color: rgba(0,0,0,.02);
+      border: 1px solid rgba(0,0,0,.1);
+      border-radius: 6px;
+      padding: 8px;
+    }
+
+input[type="radio"] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  /* Remove most all native input styles */
+  appearance: none;
+  /* For iOS < 15 */
+  background-color: var(--form-background);
+  /* Not removed via appearance */
+  margin: 0;
+
+  font: inherit;
+  color: currentColor;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid currentColor;
+  border-radius: 50%;
+  transform: translateY(-0.075em);
+
+  display: grid;
+  place-content: center;
+}
+
+input[type="radio"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--form-control-color);
+  /* Windows High Contrast Mode */
+  background-color: black;
+}
+
+input[type="radio"]:checked::before {
+  transform: scale(1);
+}
+
+input[type="radio"]:focus {
+  outline: max(2px, 0.15em) solid currentColor;
+  outline-offset: max(2px, 0.15em);
+}
+
+.css-output {
   background-color: #f5f5f5;  /* Light grey background */
   padding: 10px;  /* Padding around the text */
   border-radius: 5px;  /* Rounded corners */
@@ -85,122 +240,354 @@
   max-height: 400px;  /* Optional: Set a max height */
   overflow-y: auto;  /* Optional: Allow scrolling if content overflows */
 }
+
+.collection-picker {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.collection-picker div {
+  width: 100%;
+}
+
+.collection-name, .collection-picker h3 {
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+.collection-label {
+  font-weight: 300;
+}
+
+.variable-counter {
+  float: right;
+  font-weight: 300;
+}
+
+.section-title {
+  font-size: 15px;
+}
+
+.radio-section div {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+}
+
+.radio-section div:last-child {
+  margin-top: 8px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.radio-option input[type="radio"] {
+  margin-right: 8px;
+}
+
+.radio-option label {
+  font-size: 14px;
+  color: #333;
+}
   </style>
 </head>
 <body>
+<div class="gradient">
+  <svg width="1417" height="1442" viewBox="0 0 1417 1442" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g filter="url(#filter0_f_35_33)">
+    <rect x="499" y="499" width="209.455" height="209.455" fill="#FF0000"/>
+    </g>
+    <g filter="url(#filter1_f_35_33)">
+    <rect x="708.454" y="499" width="209.455" height="209.455" fill="#0000FF"/>
+    </g>
+    <g filter="url(#filter2_f_35_33)">
+    <rect x="708.454" y="733.39" width="209.455" height="209.455" fill="#FFFF00"/>
+    </g>
+    <g filter="url(#filter3_f_35_33)">
+    <rect x="499" y="733.39" width="209.455" height="209.455" fill="#008000"/>
+    </g>
+    <defs>
+    <filter id="filter0_f_35_33" x="0.298706" y="0.298706" width="1206.86" height="1206.86" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+    <feGaussianBlur stdDeviation="249.351" result="effect1_foregroundBlur_35_33"/>
+    </filter>
+    <filter id="filter1_f_35_33" x="209.753" y="0.298706" width="1206.86" height="1206.86" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+    <feGaussianBlur stdDeviation="249.351" result="effect1_foregroundBlur_35_33"/>
+    </filter>
+    <filter id="filter2_f_35_33" x="209.753" y="234.688" width="1206.86" height="1206.86" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+    <feGaussianBlur stdDeviation="249.351" result="effect1_foregroundBlur_35_33"/>
+    </filter>
+    <filter id="filter3_f_35_33" x="0.298706" y="234.688" width="1206.86" height="1206.86" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+    <feGaussianBlur stdDeviation="249.351" result="effect1_foregroundBlur_35_33"/>
+    </filter>
+    </defs>
+    </svg>
+     
+</div>
 
-  <div id="pluginUI">
-    <div id="variablesContainer"></div> <!-- For holding all tables -->
-    <div id="cssOutput"></div>
+<div id="noCollectionsMessage" class="no-collections">
+  Create a collection first!
+  <button class="recheckButton" style="margin-top: 10px; padding: 8px 12px; font-size: 16px;">Check Again</button>
+</div>
+
+  <div id="pluginUI" class="container">
+    <button class="recheckButton" style="margin-top: 10px; padding: 8px 12px; font-size: 16px;">Check Again</button>
+    <!-- HTML structure -->
+    <div id="collectionOptionsContainer">
+      <div class="section">
+        <div id="variablesContainer"></div> <!-- For holding all tables -->
+      </div>
+      <div class="section">
+      <h2 class="collection-name">Pick the order of your collections</h2>
+      <div class="collection-picker">
+        <!-- Sections for Root and Theme Collection will be populated by JavaScript -->
+        <div id="rootSection" class="radio-section">
+          <h3>Primitive collection</h3>
+          <!-- Dynamic radio buttons will go here -->
+        </div>
+        
+        <div id="themeSection" class="radio-section">
+          <h3>Semantic collection</h3>
+          <!-- Dynamic radio buttons will go here -->
+        </div>
+      </div>
+    </div>      
+      <div id="cssOutput"></div>
+    </div>
   </div>
 
-  <script>
-    const cssOutput = document.getElementById("cssOutput");
-const variablesContainer = document.getElementById("variablesContainer");
+<script>
+  const variablesContainer = document.getElementById("variablesContainer");
+  const cssOutput = document.getElementById("cssOutput");
 
-let scannedVariables = [];
-let collections = [];
+  let scannedVariables = [];
+  let collections = [];
+  let selectedRootCollection = null;
+  let selectedThemeCollection = null;
+  let selectedColorFormat = 'hex'; // Default HEX format
 
-// Helper function to format variable names
-function formatVariableName(name) {
-  return name.replace(/\//g, "-");
-}
-
-// Function to convert variables to CSS
-function convertToCSS(variables) {
-  const groupedByMode = {};
-
-  variables.forEach((variable) => {
-    const formattedName = formatVariableName(variable.name);
-    if (!groupedByMode[variable.mode]) {
-      groupedByMode[variable.mode] = {};
-    }
-
-    // If the variable has an alias, use the alias instead of rgba value
-    const value = variable.aliasName ? variable.aliasName : variable.rgba;
-    
-    groupedByMode[variable.mode][formattedName] = value;
-  });
-
-  let cssString = "";
-  const modes = Object.keys(groupedByMode);
-  const rootMode = modes[0];
-
-  if (groupedByMode[rootMode]) {
-    cssString += `:root {\n`;
-    const defaultMode = groupedByMode[rootMode];
-    for (const [name, value] of Object.entries(defaultMode)) {
-      cssString += `  --${name.toLowerCase().replace(/\s+/g, "-")}: ${value};\n`;
-    }
-    cssString += `}\n\n`;
+  function formatVariableName(name) {
+      return name.replace(/\//g, "-");
   }
 
-  modes.slice(1).forEach((mode) => {
-    cssString += `[data-theme="${mode.toLowerCase()}"] {\n`;
-    for (const [name, value] of Object.entries(groupedByMode[mode])) {
-      cssString += `  --${name.toLowerCase().replace(/\s+/g, "-")}: ${value};\n`;
-    }
-    cssString += `}\n\n`;
-  });
-
-  // Create the <pre> element with the class "css-output"
-  const cssOutput = document.createElement("pre");
-  cssOutput.classList.add("css-output");
-  cssOutput.textContent = cssString;
-
-  // Append the <pre> element to the variablesContainer
-  variablesContainer.appendChild(cssOutput);
+// Initialize by displaying collection options and rendering the table & CSS
+function initialize(collections) {
+    displayCollectionOptions(collections);
+    updateVariableTable();
+    updateCSSOutput();
 }
+  
+    // Function to display the collections and generate radio buttons for them
+function displayCollectionOptions(collections) {
+    const rootSection = document.getElementById("rootSection");
+    const themeSection = document.getElementById("themeSection");
 
-// Request collections when the UI loads
-window.onload = () => {
-  parent.postMessage({ pluginMessage: { type: "get-collections" } }, "*");
-  parent.postMessage({ pluginMessage: { type: "scan-file" } }, "*");
-};
+    // Clear existing radio buttons to prevent duplicates
+    rootSection.innerHTML = "";
+    themeSection.innerHTML = "";
 
-// Handle messages from the plugin
-window.onmessage = (event) => {
-  const msg = event.data.pluginMessage;
+    collections.forEach((collection, index) => {
+        const rootRadioContainer = document.createElement("div");
+        const rootRadioInput = document.createElement("input");
+        rootRadioInput.type = "radio";
+        rootRadioInput.name = "rootCollection";
+        rootRadioInput.value = collection.id;
+        rootRadioInput.id = `root-${collection.id}`;
+        if (index === 0) rootRadioInput.checked = true;
+        rootRadioInput.addEventListener("change", () => {
+            selectedRootCollection = collection.id;
+        });
 
-  if (msg.type === "scan-results") {
-    console.log("Received variables from plugin:", msg.variables);
+        const rootRadioLabel = document.createElement("label");
+        rootRadioLabel.htmlFor = `root-${collection.id}`;
+        rootRadioLabel.textContent = collection.name;
+        rootRadioContainer.appendChild(rootRadioInput);
+        rootRadioContainer.appendChild(rootRadioLabel);
+        rootSection.appendChild(rootRadioContainer);
 
-    // Create a lookup map for collections by ID
-    const collectionsById = collections.reduce((acc, collection) => {
-      acc[collection.id] = collection.name;
-      return acc;
-    }, {});
+        const themeRadioContainer = document.createElement("div");
+        const themeRadioInput = document.createElement("input");
+        themeRadioInput.type = "radio";
+        themeRadioInput.name = "themeCollection";
+        themeRadioInput.value = collection.id;
+        themeRadioInput.id = `theme-${collection.id}`;
+        if (index === 1) themeRadioInput.checked = true;
+        themeRadioInput.addEventListener("change", () => {
+            selectedThemeCollection = collection.id;
+        });
 
-    // Format variables received from the plugin, using the collection name from the lookup
-    scannedVariables = msg.variables.map((variable) => {
-      const collectionName = collectionsById[variable.variableCollectionId] || "Default Collection";
-      return {
-        name: variable.name || "Unnamed Variable",
-        rgba: variable.rgba,
-        mode: variable.modes[0] || "Default",
-        collection: collectionName, // Use the correct collection name here
-        variableCollectionId: variable.variableCollectionId,
-        aliasName: variable.aliasName, // Store the aliasName
-      };
+        const themeRadioLabel = document.createElement("label");
+        themeRadioLabel.htmlFor = `theme-${collection.id}`;
+        themeRadioLabel.textContent = collection.name;
+        themeRadioContainer.appendChild(themeRadioInput);
+        themeRadioContainer.appendChild(themeRadioLabel);
+        themeSection.appendChild(themeRadioContainer);
     });
 
-    console.log("Formatted variables:", scannedVariables);
+    const defaultRoot = document.querySelector('input[name="rootCollection"]:checked');
+    const defaultTheme = document.querySelector('input[name="themeCollection"]:checked');
+    if (defaultRoot) selectedRootCollection = defaultRoot.value;
+    if (defaultTheme) selectedThemeCollection = defaultTheme.value;
+}
 
-    // Display formatted variables table
-    displayRawVariablesTable(scannedVariables, msg.modes);
+// Function: Convert an RGBA color string to HEX format
+function rgbaToHex(rgba) {
+  const rgbaValues = rgba.match(/\d+(\.\d+)?/g);  // Match all numeric values in the rgba string
+  const r = parseInt(rgbaValues[0]);
+  const g = parseInt(rgbaValues[1]);
+  const b = parseInt(rgbaValues[2]);
+  const a = parseFloat(rgbaValues[3]);
+
+  // Convert RGB to HEX
+  const hex = `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()}`;
+
+  // If alpha is 1, we return the hex color, else we return rgba string
+  if (a === 1) {
+    return hex;
+  } else {
+    return `rgba(${r}, ${g}, ${b}, ${a.toFixed(2)})`;  // Return rgba with 2 decimal places for alpha
+  }
+}
+
+// Helper function to convert RGBA to a string with 2 decimal places
+function rgbaToRgbaString(rgba) {
+  const [r, g, b, a] = rgba.match(/\d+/g).map(Number);
+  return `rgba(${r}, ${g}, ${b}, ${a.toFixed(2)})`; // a.toFixed(2) ensures 2 decimal places
+}
+
+// Helper function to get either HEX or RGBA (based on alpha value)
+function getColorString(rgba) {
+  const [r, g, b, a] = rgba.match(/\d+/g).map(Number);
+  return a === 1 ? rgbaToHex(rgba) : rgbaToRgbaString(rgba);
+}
+  
+  
+function updateCSSOutput() {
+  const outputContainer = document.getElementById("cssOutput");
+  let cssString = "";
+
+  collections.forEach((collection) => {
+    const rootVariables = collection.variables;
+
+    rootVariables.forEach((variable) => {
+      let value;
+      // Always convert to HEX (this assumes you want HEX for all variables)
+      value = rgbaToHex(variable.rgba); // Convert to HEX format
+
+      cssString += `--${variable.name}: ${value};\n`;
+    });
+  });
+
+  // Update the CSS output display
+  outputContainer.textContent = cssString;
+}
+  
+    // Initialize by displaying collection options and rendering the table & CSS
+    function initialize(collections) {
+      displayCollectionOptions(collections);
+      updateVariableTable();
+      updateCSSOutput();
+    }
+  
+    // Update the function to use the selected color format
+    function convertToCSS(variables) {
+  const groupedByCollection = {};
+
+  // Group variables by collection and mode
+  variables.forEach((variable) => {
+    const formattedName = formatVariableName(variable.name);
+    if (!groupedByCollection[variable.collection]) {
+      groupedByCollection[variable.collection] = {};
+    }
+    if (!groupedByCollection[variable.collection][variable.mode]) {
+      groupedByCollection[variable.collection][variable.mode] = {};
+    }
+
+    let value;
+    if (variable.aliasName) {
+      value = `var(--${formatVariableName(variable.aliasName)})`;
+    } else {
+      value = rgbaToHex(variable.rgba); // Convert to HEX by default
+    }
+    groupedByCollection[variable.collection][variable.mode][formattedName] = value;
+  });
+
+  // Ensure selected collections exist
+  const rootCollection = collections.find((c) => c.id === selectedRootCollection);
+  const themeCollection = collections.find((c) => c.id === selectedThemeCollection);
+
+  if (!rootCollection || !themeCollection) {
+    console.error("Both rootCollection and themeCollection must be selected.");
+    alert("Both a root collection and a data-theme collection must be selected!");
+    return;
   }
 
-  if (msg.type === "collections") {
-    console.log("Received collections:", msg.collections);
-    collections = msg.collections;
+  // Ensure the root collection has variables
+  const rootVariables = groupedByCollection[rootCollection.name] || {};
+  const rootModes = Object.keys(rootVariables);
+  if (!rootModes.length) {
+    console.error(`No variables found for root collection: ${rootCollection.name}`);
+    alert(`No variables found for the selected root collection: ${rootCollection.name}`);
+    return;
   }
-};
 
-// Function to display formatted variables in the main table
-function displayRawVariablesTable(variables, allModes) {
-  // Group variables by collection
+  let cssString = `:root {\n`;
+  for (const [name, value] of Object.entries(rootVariables[rootModes[0]] || {})) {
+    cssString += `  --${name.toLowerCase().replace(/\s+/g, "-")}: ${value};\n`;
+  }
+  cssString += `}\n\n`;
+
+  // Ensure the theme collection has variables
+  const themeVariables = groupedByCollection[themeCollection.name];
+  if (!themeVariables) {
+    console.warn(`No variables found for theme collection: ${themeCollection.name}`);
+    return;
+  }
+
+  Object.keys(themeVariables).forEach((mode) => {
+    cssString += `[data-theme="${mode.toLowerCase()}"] {\n`;
+    for (const [name, value] of Object.entries(themeVariables[mode])) {
+      cssString += `  --${name.toLowerCase().replace(/\s+/g, "-")}: ${value};\n`;
+    }
+    cssString += `}\n\n`;
+  });
+
+  // Ensure the generated CSS is displayed inside a <pre> element
+  const existingOutput = document.querySelector(".css-output");
+  if (existingOutput) {
+    existingOutput.textContent = cssString;
+  } else {
+    const newCssOutput = document.createElement("pre");
+    newCssOutput.classList.add("css-output", "section");
+    newCssOutput.textContent = cssString;
+
+    // Ensure `variablesContainer` exists before appending
+    const variablesContainer = document.querySelector("#variablesContainer");
+    if (variablesContainer) {
+      variablesContainer.appendChild(newCssOutput);
+    } else {
+      console.error("Could not find #variables-container to append CSS output.");
+    }
+  }
+}
+  
+    function displayRawVariablesTable(variables, allModes) {
   const collectionsMap = {};
 
+  // Group variables by collection
   variables.forEach((variable) => {
     if (!collectionsMap[variable.collection]) {
       collectionsMap[variable.collection] = [];
@@ -208,25 +595,55 @@ function displayRawVariablesTable(variables, allModes) {
     collectionsMap[variable.collection].push(variable);
   });
 
-  // For each collection, create a new table
+  // Create a table for each collection
   for (const collection in collectionsMap) {
+    // Create a wrapper div for the collection (renamed "table-wrapper" to "collection-wrapper")
+    const collectionWrapper = document.createElement("div");
+    collectionWrapper.classList.add("collection-wrapper");
+
+    // Create an <h3> element for the collection name above the table
+    const collectionHeader = document.createElement("h3");
+    collectionHeader.classList.add("collection-name"); // Add class "collection-name"
+
+    // Create a span element for the label "Collection:"
+    const collectionLabel = document.createElement("span");
+    collectionLabel.classList.add("collection-label");
+    collectionLabel.textContent = "Collection: ";
+
+    // Create a Set to track unique variable names in the current collection
+    const uniqueVariableNames = new Set();
+    collectionsMap[collection].forEach((variable) => {
+      uniqueVariableNames.add(variable.name); // Add each unique variable name
+    });
+
+    // Create a span element to show the variable count
+    const variableCounter = document.createElement("span");
+    variableCounter.classList.add("variable-counter");
+    variableCounter.textContent = ` (${uniqueVariableNames.size} variables`; // Count unique variable names
+    collectionHeader.appendChild(variableCounter);
+
+    // Add the collection label, collection name, and variable counter to the <h3> element
+    collectionHeader.appendChild(collectionLabel);
+    collectionHeader.appendChild(document.createTextNode(collection)); // Name of the collection
+    collectionHeader.appendChild(variableCounter); // Append the variable counter
+
+    collectionWrapper.appendChild(collectionHeader); // Append header to wrapper
+
+    // Create a wrapper div for the table (new "table-wrapper")
+    const tableWrapper = document.createElement("div");
+    tableWrapper.classList.add("table-wrapper");
+
     const collectionTable = document.createElement("table");
     collectionTable.id = `table-${collection}`;
 
-    // Create a table header
+    // Create table header
     const tableHeader = document.createElement("thead");
     const headerRow = document.createElement("tr");
 
-    // Add the first header column for "Variable Name" and "Collection"
     const nameHeader = document.createElement("th");
-    nameHeader.textContent = "Variable Name";
+    nameHeader.textContent = "Variable";
     headerRow.appendChild(nameHeader);
 
-    const collectionHeader = document.createElement("th");
-    collectionHeader.textContent = "Collection";
-    headerRow.appendChild(collectionHeader);
-
-    // Identify unique modes across all variables for this collection
     const modesSet = new Set();
     collectionsMap[collection].forEach((variable) => {
       if (variable.mode) {
@@ -234,10 +651,8 @@ function displayRawVariablesTable(variables, allModes) {
       }
     });
 
-    // Convert the set of modes to an array for the current collection
     const collectionModes = Array.from(modesSet);
 
-    // Add a header column for each mode
     collectionModes.forEach((mode) => {
       const modeHeader = document.createElement("th");
       modeHeader.textContent = mode;
@@ -247,11 +662,9 @@ function displayRawVariablesTable(variables, allModes) {
     tableHeader.appendChild(headerRow);
     collectionTable.appendChild(tableHeader);
 
-    // Create a table body
     const tableBody = document.createElement("tbody");
     collectionTable.appendChild(tableBody);
 
-    // Create a map to store each variable by name (so it only appears once)
     const variableRows = {};
 
     collectionsMap[collection].forEach((variable) => {
@@ -259,45 +672,31 @@ function displayRawVariablesTable(variables, allModes) {
         variableRows[variable.name] = {
           name: variable.name,
           collection: variable.collection,
-          modes: {}
+          modes: {},
         };
       }
 
-      // Store the value of the variable for the correct mode
       variableRows[variable.name].modes[variable.mode] = variable;
     });
 
-    // Now loop through the variableRows map and create a row for each variable
     Object.values(variableRows).forEach((variable) => {
       const row = document.createElement("tr");
 
-      // Create a cell for the variable name
       const nameCell = document.createElement("td");
       nameCell.textContent = variable.name;
       row.appendChild(nameCell);
 
-      // Create a cell for the collection name
-      const collectionCell = document.createElement("td");
-      collectionCell.textContent = variable.collection;
-      row.appendChild(collectionCell);
-
-      // Create a cell for each mode
       collectionModes.forEach((mode) => {
         const modeCell = document.createElement("td");
-
-        // Check if the current variable has a value for the current mode
         const modeVariable = variable.modes[mode];
 
         if (modeVariable) {
-          // Check if the variable has an alias for this mode
           if (modeVariable.aliasName) {
-            // Show alias name instead of RGBA, wrapped in a span with "alias-pill" class
             const aliasSpan = document.createElement("span");
             aliasSpan.classList.add("alias-pill");
             aliasSpan.textContent = modeVariable.aliasName;
             modeCell.appendChild(aliasSpan);
           } else {
-            // Otherwise, show the RGBA value
             const colorSquare = document.createElement("span");
             colorSquare.style.display = "inline-block";
             colorSquare.style.width = "12px";
@@ -305,15 +704,16 @@ function displayRawVariablesTable(variables, allModes) {
             colorSquare.style.backgroundColor = modeVariable.rgba;
 
             const valueText = document.createElement("span");
-            valueText.textContent = modeVariable.rgba;
 
-            // Append the color square and the value text
+            // Use the rgbaToHex function to handle both HEX and RGBA formats properly
+            valueText.textContent = rgbaToHex(modeVariable.rgba); // Will return either HEX or RGBA
+
             modeCell.appendChild(colorSquare);
             modeCell.appendChild(document.createTextNode(" "));
             modeCell.appendChild(valueText);
           }
         } else {
-          modeCell.textContent = "N/A";  // Display "N/A" if the variable doesn't belong to this mode
+          modeCell.textContent = "N/A";
         }
 
         row.appendChild(modeCell);
@@ -322,14 +722,13 @@ function displayRawVariablesTable(variables, allModes) {
       tableBody.appendChild(row);
     });
 
-    // Append the created table to the variablesContainer after it's fully constructed
-    variablesContainer.appendChild(collectionTable);
+    tableWrapper.appendChild(collectionTable); // Append the table to the new "table-wrapper"
+    collectionWrapper.appendChild(tableWrapper); // Append the "table-wrapper" to the "collection-wrapper"
+    variablesContainer.appendChild(collectionWrapper); // Append the "collection-wrapper" to the container
   }
 
-  // Create the "Convert to CSS" button if it doesn't exist already
-  let convertToCSSButton = document.getElementById("convertToCSSButton");
-  if (!convertToCSSButton) {
-    convertToCSSButton = document.createElement("button");
+  if (!document.getElementById("convertToCSSButton")) {
+    const convertToCSSButton = document.createElement("button");
     convertToCSSButton.id = "convertToCSSButton";
     convertToCSSButton.textContent = "Convert to CSS";
     convertToCSSButton.addEventListener("click", () => {
@@ -337,14 +736,97 @@ function displayRawVariablesTable(variables, allModes) {
     });
     variablesContainer.appendChild(convertToCSSButton);
   }
-
-  // Display the CSS output container
-  if (!cssOutput) {
-    const newCssOutput = document.createElement("pre");
-    newCssOutput.id = "cssOutput";
-    variablesContainer.appendChild(newCssOutput);
-  }
 }
-    </script>
+
+document.querySelectorAll(".recheckButton").forEach(button => {
+    button.addEventListener("click", () => {
+        recheckCollections();
+    });
+});
+
+// Function to send request for collections
+function recheckCollections() {
+      parent.postMessage({ pluginMessage: { type: "get-collections" } }, "*");
+  }
+
+function updateUI() {
+    const pluginUI = document.getElementById("pluginUI");
+    const noCollectionsMessage = document.getElementById("noCollectionsMessage");
+
+    if (collections.length > 0) {
+        pluginUI.style.display = "block";
+        noCollectionsMessage.style.display = "none";
+    } else {
+        pluginUI.style.display = "none";
+        noCollectionsMessage.style.display = "block";
+    }
+}
+
+// Handle plugin messages
+function handlePluginMessage(msg) {
+    if (msg.type === "collections") {
+        collections = msg.collections;
+        updateUI();
+        displayCollectionOptions(collections);
+    }
+}
+
+// Single `window.onload` function
+window.onload = () => {
+    recheckCollections();
+    window.onmessage = (event) => handlePluginMessage(event.data.pluginMessage);
+};
+
+// Initial requests
+window.onload = () => {
+  parent.postMessage({ pluginMessage: { type: "get-collections" } }, "*");
+  parent.postMessage({ pluginMessage: { type: "scan-file" } }, "*");
+
+  window.onmessage = (event) => handlePluginMessage(event.data.pluginMessage);
+};
+  
+  function inMessage(msg) {
+    const pluginUI = document.getElementById("pluginUI");
+    const noCollectionsMessage = document.getElementById("noCollectionsMessage");
+
+    if (msg.type === "collections") {
+      collections = msg.collections;
+
+      if (collections.length === 0) {
+        pluginUI.style.display = "none";
+        noCollectionsMessage.style.display = "block";
+      } else {
+        pluginUI.style.display = "block";
+        noCollectionsMessage.style.display = "none";
+        displayCollectionOptions(collections);
+      }
+    }
+
+    if (msg.type === "scan-results") {
+      const collectionsById = collections.reduce((acc, collection) => {
+        acc[collection.id] = collection.name;
+        return acc;
+      }, {});
+
+      scannedVariables = msg.variables.map((variable) => ({
+        name: variable.name || "Unnamed Variable",
+        rgba: variable.rgba,
+        mode: variable.modes[0] || "Default",
+        collection: collectionsById[variable.variableCollectionId] || "Default Collection",
+        aliasName: variable.aliasName,
+      }));
+
+      displayRawVariablesTable(scannedVariables, msg.modes);
+    }
+  }
+  
+    window.onload = () => {
+      parent.postMessage({ pluginMessage: { type: "get-collections" } }, "*");
+      parent.postMessage({ pluginMessage: { type: "scan-file" } }, "*");
+  
+      window.onmessage = (event) => 
+      inMessage(event.data.pluginMessage);
+    };
+  </script>
 </body>
 </html>
