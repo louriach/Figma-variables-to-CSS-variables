@@ -64,7 +64,7 @@ table {
       margin: 0;
       text-align: center;
     }
-    button {
+    button.convert {
       /* background: linear-gradient(180deg, #06A9C6 0%, #07C3A8 100%); */
       /* background: linear-gradient(0deg, #0691AA 0%, #05879F 11.11%, #047E94 22.22%, #037488 33.33%, #026A7D 44.44%, #026071 55.56%, #015665 66.67%, #014C5A 77.78%, #00424E 88.89%, #003842 100%);
       background: linear-gradient(0deg, #0ABCDB 0%, #0BB1D8 11.11%, #0DA5D6 22.22%, #0E9BD4 33.33%, #0F90D1 44.44%, #1186CF 55.56%, #127DCC 66.67%, #1374CA 77.78%, #156BC7 88.89%, #1662C5 100%); */
@@ -77,9 +77,6 @@ table {
       border-radius: 6px;
       cursor: pointer;
       letter-spacing: .5px;
-    }
-    button:hover {
-      background-color: #218838;
     }
     pre {
       white-space: pre-wrap;
@@ -119,8 +116,9 @@ table {
     }
 
     #variablesContainer {
-      display: flex;
+      /* display: flex; */
       gap: 16px;
+      padding: 24px;
     }
 
     .collection-wrapper {
@@ -228,6 +226,43 @@ input[type="radio"]:checked::before {
 input[type="radio"]:focus {
   outline: max(2px, 0.15em) solid currentColor;
   outline-offset: max(2px, 0.15em);
+}
+
+.header {
+  align-items: center;
+  background: white;
+  border: 1px solid rgba(0,0,0,.1);
+  border-radius: 6px;
+  box-shadow: 0px 2px 2px rgba(0,0,0,.03), 0px 2px 6px rgba(0,0,0,.03);
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.tab-button {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, .3);
+  border-radius: 4px;  
+  color: rgba(0, 0, 0, .7);
+  padding: 6px 10px;
+}
+
+.tab-button.active {
+  background: #0B324A;
+  color: white;
+}
+
+.header .recheckButton {
+    border-radius: 6px;
+    background: #E8F0F9;
+    border: 1px solid rgba(0,0,0,.1);
+    color: #031B29;
+    padding: 4px 8px;
 }
 
 .css-output {
@@ -338,6 +373,14 @@ input[type="radio"]:focus {
      
 </div>
 
+<div class="header">
+  <div class="tabs">
+    <button id="convertToCSSTab" class="tab-button active">Convert to CSS</button>
+    <button id="collectionsTab" class="tab-button">Your variable collections</button>
+  </div>
+  <button class="recheckButton">Reload</button>
+</div>
+
 <div id="noCollectionsMessage" class="no-collections">
   Create a collection first!
   <button class="recheckButton" style="margin-top: 10px; padding: 8px 12px; font-size: 16px;">Check Again</button>
@@ -350,7 +393,7 @@ input[type="radio"]:focus {
       <div class="section">
         <div id="variablesContainer"></div> <!-- For holding all tables -->
       </div>
-      <div class="section">
+      <div id="chooseCollectionOrder" class="section">
       <h2 class="collection-name">Pick the order of your collections</h2>
       <div class="collection-picker">
         <!-- Sections for Root and Theme Collection will be populated by JavaScript -->
@@ -370,6 +413,15 @@ input[type="radio"]:focus {
   </div>
 
 <script>
+
+document.getElementById("convertToCSSTab").addEventListener("click", () => switchTab("convertToCSSPanel"));
+document.getElementById("collectionsTab").addEventListener("click", () => switchTab("collectionsPanel"));
+    
+  const tabButtons = document.querySelectorAll(".tab-button");
+  const tabContents = document.querySelectorAll(".tab-content");
+  const checkAgainButton = document.getElementById("checkAgainButton");
+  const collectionPicker = document.getElementById("collection-picker");
+  const collectionsContainer = document.getElementById("collectionsContainer");
   const variablesContainer = document.getElementById("variablesContainer");
   const cssOutput = document.getElementById("cssOutput");
 
@@ -389,24 +441,35 @@ function initialize(collections) {
     updateVariableTable();
     updateCSSOutput();
 }
+
+function switchTab(tabId) {
+    document.querySelectorAll(".tab-content").forEach(panel => panel.classList.remove("active"));
+    document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+    document.getElementById(tabId).classList.add("active");
+    document.getElementById(`${tabId.replace("Panel", "Tab")}`).classList.add("active");
+}
   
     // Function to display the collections and generate radio buttons for them
-function displayCollectionOptions(collections) {
+    function displayCollectionOptions(collections) {
     const rootSection = document.getElementById("rootSection");
     const themeSection = document.getElementById("themeSection");
+    const chooseCollectionOrder = document.getElementById("chooseCollectionOrder");
 
     // Clear existing radio buttons to prevent duplicates
     rootSection.innerHTML = "";
     themeSection.innerHTML = "";
 
-    collections.forEach((collection, index) => {
+    selectedRootCollection = null;  // Ensure no preselection
+    selectedThemeCollection = null; // Ensure no preselection
+
+    collections.forEach((collection) => {
+        // Root collection radio buttons
         const rootRadioContainer = document.createElement("div");
         const rootRadioInput = document.createElement("input");
         rootRadioInput.type = "radio";
         rootRadioInput.name = "rootCollection";
         rootRadioInput.value = collection.id;
         rootRadioInput.id = `root-${collection.id}`;
-        if (index === 0) rootRadioInput.checked = true;
         rootRadioInput.addEventListener("change", () => {
             selectedRootCollection = collection.id;
         });
@@ -418,13 +481,13 @@ function displayCollectionOptions(collections) {
         rootRadioContainer.appendChild(rootRadioLabel);
         rootSection.appendChild(rootRadioContainer);
 
+        // Theme collection radio buttons
         const themeRadioContainer = document.createElement("div");
         const themeRadioInput = document.createElement("input");
         themeRadioInput.type = "radio";
         themeRadioInput.name = "themeCollection";
         themeRadioInput.value = collection.id;
         themeRadioInput.id = `theme-${collection.id}`;
-        if (index === 1) themeRadioInput.checked = true;
         themeRadioInput.addEventListener("change", () => {
             selectedThemeCollection = collection.id;
         });
@@ -437,10 +500,18 @@ function displayCollectionOptions(collections) {
         themeSection.appendChild(themeRadioContainer);
     });
 
-    const defaultRoot = document.querySelector('input[name="rootCollection"]:checked');
-    const defaultTheme = document.querySelector('input[name="themeCollection"]:checked');
-    if (defaultRoot) selectedRootCollection = defaultRoot.value;
-    if (defaultTheme) selectedThemeCollection = defaultTheme.value;
+    // Move Convert to CSS button here
+    let convertToCSSButton = document.getElementById("convertToCSSButton");
+    if (!convertToCSSButton) {
+        convertToCSSButton = document.createElement("button");
+        convertToCSSButton.id = "convertToCSSButton";
+        convertToCSSButton.textContent = "Convert to CSS";
+        convertToCSSButton.addEventListener("click", () => {
+            convertToCSS(scannedVariables);
+        });
+
+        chooseCollectionOrder.appendChild(convertToCSSButton);
+    }
 }
 
 // Function: Convert an RGBA color string to HEX format
@@ -503,7 +574,7 @@ function updateCSSOutput() {
     }
   
     // Update the function to use the selected color format
-    function convertToCSS(variables) {
+  function convertToCSS(variables) {
   const groupedByCollection = {};
 
   // Group variables by collection and mode
@@ -566,25 +637,23 @@ function updateCSSOutput() {
   });
 
   // Ensure the generated CSS is displayed inside a <pre> element
-  const existingOutput = document.querySelector(".css-output");
-  if (existingOutput) {
-    existingOutput.textContent = cssString;
-  } else {
-    const newCssOutput = document.createElement("pre");
-    newCssOutput.classList.add("css-output", "section");
-    newCssOutput.textContent = cssString;
+  let cssOutput = document.querySelector(".css-output");
+  if (!cssOutput) {
+    cssOutput = document.createElement("pre");
+    cssOutput.classList.add("css-output", "section");
+  }
+  cssOutput.textContent = cssString;
 
-    // Ensure `variablesContainer` exists before appending
-    const variablesContainer = document.querySelector("#variablesContainer");
-    if (variablesContainer) {
-      variablesContainer.appendChild(newCssOutput);
-    } else {
-      console.error("Could not find #variables-container to append CSS output.");
-    }
+  // Move it to be after the Convert to CSS button
+  const convertToCSSButton = document.getElementById("convertToCSSButton");
+  if (convertToCSSButton) {
+    convertToCSSButton.insertAdjacentElement("afterend", cssOutput);
+  } else {
+    console.error("Could not find Convert to CSS button to append CSS output.");
   }
 }
   
-    function displayRawVariablesTable(variables, allModes) {
+function displayRawVariablesTable(variables, allModes) {
   const collectionsMap = {};
 
   // Group variables by collection
@@ -727,15 +796,6 @@ function updateCSSOutput() {
     variablesContainer.appendChild(collectionWrapper); // Append the "collection-wrapper" to the container
   }
 
-  if (!document.getElementById("convertToCSSButton")) {
-    const convertToCSSButton = document.createElement("button");
-    convertToCSSButton.id = "convertToCSSButton";
-    convertToCSSButton.textContent = "Convert to CSS";
-    convertToCSSButton.addEventListener("click", () => {
-      convertToCSS(variables);
-    });
-    variablesContainer.appendChild(convertToCSSButton);
-  }
 }
 
 document.querySelectorAll(".recheckButton").forEach(button => {
