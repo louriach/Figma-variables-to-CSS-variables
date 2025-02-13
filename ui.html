@@ -55,225 +55,145 @@ table {
 }
 
 
-    body {
-      background-color: #f0f0f0;
-      color: #031B29;
-      font-family: Inter, sans-serif;
-      font-size: 13px;
-      padding: 4px;
-      margin: 0;
-      text-align: center;
-    }
-    button.convert {
-      /* background: linear-gradient(180deg, #06A9C6 0%, #07C3A8 100%); */
-      /* background: linear-gradient(0deg, #0691AA 0%, #05879F 11.11%, #047E94 22.22%, #037488 33.33%, #026A7D 44.44%, #026071 55.56%, #015665 66.67%, #014C5A 77.78%, #00424E 88.89%, #003842 100%);
-      background: linear-gradient(0deg, #0ABCDB 0%, #0BB1D8 11.11%, #0DA5D6 22.22%, #0E9BD4 33.33%, #0F90D1 44.44%, #1186CF 55.56%, #127DCC 66.67%, #1374CA 77.78%, #156BC7 88.89%, #1662C5 100%); */
-      background: linear-gradient(white, white) padding-box, linear-gradient(to right, #06A9C6, #003842) border-box;
-      border: 2px solid transparent;
-      box-shadow: 0 2px 2px rgba(0,0,0,.1), 0 2px 8px rgba(0,0,0,.1);
-      color: #003842;
-      font-weight: 400;
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      letter-spacing: .5px;
-    }
-    pre {
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      background-color: #f4f4f4;
-      padding: 15px;
-      max-height: 300px;
-      overflow-y: auto;
-      text-align: left;
-      transition: all 0.3s ease;
-    }
-    table {
-      background-color: white;
-      border: 1px solid rgba(0,0,0,.2);
-      box-shadow: 0 2px 2px rgba(0,0,0,.05), 0 2px 8px rgba(0,0,0,.025);      
-      overflow: hidden;
-      width: 100%;
-    }
-    th, td {
-      border: 1px solid #eee;
-      font-size: 11px;
-      padding: 9px;
-      text-align: left;
-    }
-    th {
-      background-color: #f4f4f4;
-      font-weight: 600;
-    }
-
-    td {
-      vertical-align: middle;
-    }
-
-    td span:first-child {
-      border: 1px solid rgba(0,0,0,.1);
-      border-radius: 2px;
-    }
-
-    #variablesContainer {
-      /* display: flex; */
-      gap: 16px;
-      padding: 24px;
-    }
-
-    .collection-wrapper {
-      border-radius: 6px;
-      flex: 1;
-      margin-bottom: 16px;
-    }
-
-    .collection-wrapper:last-child {
-      margin-bottom: 0;
-    }
-
-    .collection-wrapper h3 {
-      background: rgba(21, 107, 199, 0.1);
-      border-radius: 6px;
-      color: #0D498A;
-      padding: 8px;
-    }
-
-    .table-wrapper {
-      border-radius: 6px;
-      box-shadow: 0px 2px 2px rgba(0,0,0,.03), 0px 2px 6px rgba(0,0,0,.03);
-      max-height: 220px;
-      overflow: scroll;
-    }    
-
-    .alias-pill {
-      background: #f0f0f0;
-      border: 1px solid #eee;
-      border-radius: 6px;
-      padding: 2px 6px;
-    }
-
-    .gradient {
-      bottom: 0;
-      left: 0;
-      position: fixed;
-      right: 0;
-      top: 0;
-      z-index: -1;
-    }
-
-    .no-collections {
-      background: rgba(21, 107, 199, 0.1);
-      border-radius: 6px;
-      color: #0D498A;
-      padding: 8px;
-    }
-
-    .section {
-      background: rgba(255,255,255,.5);
-      border: 1px solid rgba(0,0,0,.1);
-      border-radius: 9px;
-      margin-bottom: 4px;
-      padding: 16px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .radio-section {
-      background-color: rgba(0,0,0,.02);
-      border: 1px solid rgba(0,0,0,.1);
-      border-radius: 6px;
-      padding: 8px;
-    }
-
-input[type="radio"] {
-  /* Add if not using autoprefixer */
-  -webkit-appearance: none;
-  /* Remove most all native input styles */
-  appearance: none;
-  /* For iOS < 15 */
-  background-color: var(--form-background);
-  /* Not removed via appearance */
+body {
+  background-color: #f0f0f0;
+  color: #0B324A;
+  font-family: Inter, sans-serif;
+  font-size: 13px;
+  padding: 16px;
   margin: 0;
-
-  font: inherit;
-  color: currentColor;
-  width: 1.15em;
-  height: 1.15em;
-  border: 0.15em solid currentColor;
-  border-radius: 50%;
-  transform: translateY(-0.075em);
-
-  display: grid;
-  place-content: center;
+  text-align: center;
+}
+button.convert {
+  background: linear-gradient(180deg, #106DD1 0%, #1064D0 11.11%, #105ACF 22.22%, #1051CE 33.33%, #1048CD 44.44%, #0F3FCB 55.56%, #0F35CA 66.67%, #0F2DC9 77.78%, #0F24C8 88.89%, #0F1BC7 100%);
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, .7);
+    border-radius: 9px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, .1), 0 2px 8px rgba(0, 0, 0, .1);
+    color: white;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: .3px;
+    padding: 12px 20px;
+    transition: all ease .1s;
+}
+button.convert:hover {
+  background: linear-gradient(180deg, #0957AA 0%, #094EA6 11.11%, #0845A3 22.22%, #083C9F 33.33%, #08339B 44.44%, #072B98 55.56%, #072394 66.67%, #071C90 77.78%, #06158D 88.89%, #060E89 100%);
+  box-shadow: 0 4px 2px rgba(0, 0, 0, .1), 0 2px 20px rgba(0, 0, 0, .1);
+}
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background-color: #f4f4f4;
+  padding: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+table {
+  background-color: white;
+  border: 1px solid rgba(0,0,0,.2);
+  box-shadow: 0 2px 2px rgba(0,0,0,.05), 0 2px 8px rgba(0,0,0,.025);      
+  overflow: hidden;
+  width: 100%;
+}
+th, td {
+  border: 1px solid #eee;
+  font-size: 11px;
+  padding: 9px;
+  text-align: left;
+}
+th {
+  background-color: #f4f4f4;
+  font-weight: 600;
 }
 
-input[type="radio"]::before {
-  content: "";
-  width: 0.65em;
-  height: 0.65em;
-  border-radius: 50%;
-  transform: scale(0);
-  transition: 120ms transform ease-in-out;
-  box-shadow: inset 1em 1em var(--form-control-color);
-  /* Windows High Contrast Mode */
-  background-color: black;
+td {
+  vertical-align: middle;
 }
 
-input[type="radio"]:checked::before {
-  transform: scale(1);
-}
-
-input[type="radio"]:focus {
-  outline: max(2px, 0.15em) solid currentColor;
-  outline-offset: max(2px, 0.15em);
-}
-
-.header {
-  align-items: center;
-  background: white;
+td span:first-child {
   border: 1px solid rgba(0,0,0,.1);
+  border-radius: 2px;
+}
+
+#variablesContainer {
+  gap: 16px;
+}
+
+.collection-wrapper {
   border-radius: 6px;
-  box-shadow: 0px 2px 2px rgba(0,0,0,.03), 0px 2px 6px rgba(0,0,0,.03);
-  display: flex;
-  justify-content: space-between;
+  flex: 1;
+  margin-bottom: 16px;
+}
+
+.collection-wrapper:last-child {
+  margin-bottom: 0;
+}
+
+.collection-wrapper h3 {
+  background: rgba(21, 107, 199, 0.1);
+  border-radius: 6px;
+  color: #0D498A;
   padding: 8px;
 }
 
-.tabs {
-  display: flex;
-  gap: 8px;
+.table-wrapper {
+  border-radius: 6px;
+  box-shadow: 0px 2px 2px rgba(0,0,0,.03), 0px 2px 6px rgba(0,0,0,.03);
+  max-height: 220px;
+  overflow: scroll;
+}    
+
+.alias-pill {
+  background: #f0f0f0;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 2px 6px;
 }
 
-.tab-button {
-  background: transparent;
-  border: 1px solid rgba(0, 0, 0, .3);
-  border-radius: 4px;  
-  color: rgba(0, 0, 0, .7);
-  padding: 6px 10px;
+.gradient {
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: -1;
 }
 
-.tab-button.active {
-  background: #0B324A;
-  color: white;
+.no-collections {
+  background: rgba(21, 107, 199, 0.1);
+  border-radius: 6px;
+  color: #0D498A;
+  padding: 8px;
 }
 
-.header .recheckButton {
-    border-radius: 6px;
-    background: #E8F0F9;
-    border: 1px solid rgba(0,0,0,.1);
-    color: #031B29;
-    padding: 4px 8px;
+.section {
+  background: rgba(255,255,255,.5);
+  border: 1px solid rgba(0,0,0,.1);
+  border-radius: 9px;
+  margin-bottom: 16px;
+  padding: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.section:last-child {
+  margin-bottom: 0;
 }
 
 .css-output {
-  background-color: #f5f5f5;  /* Light grey background */
-  padding: 10px;  /* Padding around the text */
-  border-radius: 5px;  /* Rounded corners */
-  font-family: "Courier New", monospace;  /* Monospace font for better code presentation */
-  white-space: pre-wrap;  /* Allow wrapping of long lines */
-  word-wrap: break-word;  /* Ensure long lines break correctly */
-  max-height: 400px;  /* Optional: Set a max height */
-  overflow-y: auto;  /* Optional: Allow scrolling if content overflows */
+  background-color: #f5f5f5;  
+  border-radius: 9px; 
+  font-family: "Courier New", monospace;
+  margin-top: 12px; 
+  max-height: 320px;
+  padding: 12px; 
+  overflow-y: auto;
+  white-space: pre-wrap; 
+  word-wrap: break-word; 
 }
 
 .collection-picker {
@@ -282,12 +202,8 @@ input[type="radio"]:focus {
   width: 100%;
 }
 
-.collection-picker div {
-  width: 100%;
-}
-
 .collection-name, .collection-picker h3 {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   margin-bottom: 12px;
   text-align: left;
@@ -306,29 +222,34 @@ input[type="radio"]:focus {
   font-size: 15px;
 }
 
+.radio-section {
+    background-color: rgba(0,0,0,.02);
+    border: 1px solid rgba(0,0,0,.1);
+    border-radius: 9px;
+}
 .radio-section div {
   align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, .07);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 01);
   display: flex;
-  gap: 4px;
+  gap: 8px;
+  padding: 12px;
 }
 
 .radio-section div:last-child {
-  margin-top: 8px;
-}
-
-.radio-option {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.radio-option input[type="radio"] {
-  margin-right: 8px;
+  border: none;
+  box-shadow: none;
 }
 
 .radio-option label {
   font-size: 14px;
   color: #333;
+}
+
+input[type="radio"] {
+  margin: 0;
+  height: 24px;
+  width: 24px;
 }
   </style>
 </head>
@@ -373,53 +294,39 @@ input[type="radio"]:focus {
      
 </div>
 
-<div class="header">
-  <div class="tabs">
-    <button id="convertToCSSTab" class="tab-button active">Convert to CSS</button>
-    <button id="collectionsTab" class="tab-button">Your variable collections</button>
-  </div>
-  <button class="recheckButton">Reload</button>
-</div>
-
-<div id="noCollectionsMessage" class="no-collections">
-  Create a collection first!
-  <button class="recheckButton" style="margin-top: 10px; padding: 8px 12px; font-size: 16px;">Check Again</button>
-</div>
-
   <div id="pluginUI" class="container">
-    <button class="recheckButton" style="margin-top: 10px; padding: 8px 12px; font-size: 16px;">Check Again</button>
+
     <!-- HTML structure -->
     <div id="collectionOptionsContainer">
-      <div class="section">
-        <div id="variablesContainer"></div> <!-- For holding all tables -->
-      </div>
       <div id="chooseCollectionOrder" class="section">
-      <h2 class="collection-name">Pick the order of your collections</h2>
-      <div class="collection-picker">
-        <!-- Sections for Root and Theme Collection will be populated by JavaScript -->
-        <div id="rootSection" class="radio-section">
+        <h2 class="collection-name section-title">Pick the order of your collections</h2>
+        <div class="collection-picker">
+          <!-- Sections for Root and Theme Collection will be populated by JavaScript -->
+         <div class="collection-wrapper collection-root">
           <h3>Primitive collection</h3>
+          <div id="rootSection" class="radio-section">
           <!-- Dynamic radio buttons will go here -->
+           </div>
         </div>
         
-        <div id="themeSection" class="radio-section">
+        <div class="collection-wrapper collection-semantic">
           <h3>Semantic collection</h3>
-          <!-- Dynamic radio buttons will go here -->
+          <div id="themeSection" class="radio-section">
+            <!-- Dynamic radio buttons will go here -->
+          </div>
         </div>
       </div>
     </div>      
       <div id="cssOutput"></div>
     </div>
+    <div class="section">
+      <h2 class="collection-name section-title">All local colour collections</h2>
+      <div id="variablesContainer"></div> <!-- For holding all tables -->
+    </div>
   </div>
 
 <script>
-
-document.getElementById("convertToCSSTab").addEventListener("click", () => switchTab("convertToCSSPanel"));
-document.getElementById("collectionsTab").addEventListener("click", () => switchTab("collectionsPanel"));
     
-  const tabButtons = document.querySelectorAll(".tab-button");
-  const tabContents = document.querySelectorAll(".tab-content");
-  const checkAgainButton = document.getElementById("checkAgainButton");
   const collectionPicker = document.getElementById("collection-picker");
   const collectionsContainer = document.getElementById("collectionsContainer");
   const variablesContainer = document.getElementById("variablesContainer");
@@ -429,7 +336,6 @@ document.getElementById("collectionsTab").addEventListener("click", () => switch
   let collections = [];
   let selectedRootCollection = null;
   let selectedThemeCollection = null;
-  let selectedColorFormat = 'hex'; // Default HEX format
 
   function formatVariableName(name) {
       return name.replace(/\//g, "-");
@@ -441,96 +347,91 @@ function initialize(collections) {
     updateVariableTable();
     updateCSSOutput();
 }
-
-function switchTab(tabId) {
-    document.querySelectorAll(".tab-content").forEach(panel => panel.classList.remove("active"));
-    document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
-    document.getElementById(tabId).classList.add("active");
-    document.getElementById(`${tabId.replace("Panel", "Tab")}`).classList.add("active");
-}
   
     // Function to display the collections and generate radio buttons for them
-    function displayCollectionOptions(collections) {
+  function displayCollectionOptions(collections) {
     const rootSection = document.getElementById("rootSection");
     const themeSection = document.getElementById("themeSection");
     const chooseCollectionOrder = document.getElementById("chooseCollectionOrder");
 
-    // Clear existing radio buttons to prevent duplicates
     rootSection.innerHTML = "";
     themeSection.innerHTML = "";
 
-    selectedRootCollection = null;  // Ensure no preselection
-    selectedThemeCollection = null; // Ensure no preselection
+    selectedRootCollection = null;
+    selectedThemeCollection = null;
 
     collections.forEach((collection) => {
-        // Root collection radio buttons
-        const rootRadioContainer = document.createElement("div");
-        const rootRadioInput = document.createElement("input");
-        rootRadioInput.type = "radio";
-        rootRadioInput.name = "rootCollection";
-        rootRadioInput.value = collection.id;
-        rootRadioInput.id = `root-${collection.id}`;
-        rootRadioInput.addEventListener("change", () => {
-            selectedRootCollection = collection.id;
-        });
+      const rootRadioContainer = document.createElement("div");
+      const rootRadioInput = document.createElement("input");
+      rootRadioInput.type = "radio";
+      rootRadioInput.name = "rootCollection";
+      rootRadioInput.value = collection.id;
+      rootRadioInput.id = `root-${collection.id}`;
+      rootRadioInput.addEventListener("change", () => {
+        selectedRootCollection = collection.id;
+      });
 
-        const rootRadioLabel = document.createElement("label");
-        rootRadioLabel.htmlFor = `root-${collection.id}`;
-        rootRadioLabel.textContent = collection.name;
-        rootRadioContainer.appendChild(rootRadioInput);
-        rootRadioContainer.appendChild(rootRadioLabel);
-        rootSection.appendChild(rootRadioContainer);
+      const rootRadioLabel = document.createElement("label");
+      rootRadioLabel.htmlFor = `root-${collection.id}`;
+      rootRadioLabel.textContent = collection.name;
+      rootRadioContainer.appendChild(rootRadioInput);
+      rootRadioContainer.appendChild(rootRadioLabel);
+      rootSection.appendChild(rootRadioContainer);
 
-        // Theme collection radio buttons
-        const themeRadioContainer = document.createElement("div");
-        const themeRadioInput = document.createElement("input");
-        themeRadioInput.type = "radio";
-        themeRadioInput.name = "themeCollection";
-        themeRadioInput.value = collection.id;
-        themeRadioInput.id = `theme-${collection.id}`;
-        themeRadioInput.addEventListener("change", () => {
-            selectedThemeCollection = collection.id;
-        });
+      const themeRadioContainer = document.createElement("div");
+      const themeRadioInput = document.createElement("input");
+      themeRadioInput.type = "radio";
+      themeRadioInput.name = "themeCollection";
+      themeRadioInput.value = collection.id;
+      themeRadioInput.id = `theme-${collection.id}`;
+      themeRadioInput.addEventListener("change", () => {
+        selectedThemeCollection = collection.id;
+      });
 
-        const themeRadioLabel = document.createElement("label");
-        themeRadioLabel.htmlFor = `theme-${collection.id}`;
-        themeRadioLabel.textContent = collection.name;
-        themeRadioContainer.appendChild(themeRadioInput);
-        themeRadioContainer.appendChild(themeRadioLabel);
-        themeSection.appendChild(themeRadioContainer);
+      const themeRadioLabel = document.createElement("label");
+      themeRadioLabel.htmlFor = `theme-${collection.id}`;
+      themeRadioLabel.textContent = collection.name;
+      themeRadioContainer.appendChild(themeRadioInput);
+      themeRadioContainer.appendChild(themeRadioLabel);
+      themeSection.appendChild(themeRadioContainer);
     });
 
-    // Move Convert to CSS button here
     let convertToCSSButton = document.getElementById("convertToCSSButton");
     if (!convertToCSSButton) {
-        convertToCSSButton = document.createElement("button");
-        convertToCSSButton.id = "convertToCSSButton";
-        convertToCSSButton.textContent = "Convert to CSS";
-        convertToCSSButton.addEventListener("click", () => {
-            convertToCSS(scannedVariables);
-        });
+      convertToCSSButton = document.createElement("button");
+      convertToCSSButton.id = "convertToCSSButton";
+      convertToCSSButton.classList = "convert";
+      convertToCSSButton.textContent = "Convert to CSS";
+      convertToCSSButton.addEventListener("click", () => {
+        convertToCSS(scannedVariables);
+      });
 
-        chooseCollectionOrder.appendChild(convertToCSSButton);
+      chooseCollectionOrder.appendChild(convertToCSSButton);
     }
-}
+  }
 
 // Function: Convert an RGBA color string to HEX format
 function rgbaToHex(rgba) {
-  const rgbaValues = rgba.match(/\d+(\.\d+)?/g);  // Match all numeric values in the rgba string
-  const r = parseInt(rgbaValues[0]);
-  const g = parseInt(rgbaValues[1]);
-  const b = parseInt(rgbaValues[2]);
-  const a = parseFloat(rgbaValues[3]);
+  if (!rgba || typeof rgba !== "string") {
+    console.error("Invalid input to rgbaToHex: Input is empty or not a string");
+    return "/* error: invalid rgba */"; // Return a safe fallback
+  }
+
+  const rgbaValues = rgba.match(/\d+(\.\d+)?/g);
+  if (!rgbaValues || rgbaValues.length < 3) {
+    console.error("Unexpected RGBA format:", rgba);
+    return "/* error: invalid rgba format */";
+  }
+
+  const r = parseInt(rgbaValues[0], 10);
+  const g = parseInt(rgbaValues[1], 10);
+  const b = parseInt(rgbaValues[2], 10);
+  const a = rgbaValues[3] !== undefined ? parseFloat(rgbaValues[3]) : 1; // Default alpha to 1
 
   // Convert RGB to HEX
   const hex = `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()}`;
 
-  // If alpha is 1, we return the hex color, else we return rgba string
-  if (a === 1) {
-    return hex;
-  } else {
-    return `rgba(${r}, ${g}, ${b}, ${a.toFixed(2)})`;  // Return rgba with 2 decimal places for alpha
-  }
+  return a === 1 ? hex : `rgba(${r}, ${g}, ${b}, ${a.toFixed(2)})`;
 }
 
 // Helper function to convert RGBA to a string with 2 decimal places
@@ -545,39 +446,32 @@ function getColorString(rgba) {
   return a === 1 ? rgbaToHex(rgba) : rgbaToRgbaString(rgba);
 }
   
-  
-function updateCSSOutput() {
-  const outputContainer = document.getElementById("cssOutput");
-  let cssString = "";
-
-  collections.forEach((collection) => {
-    const rootVariables = collection.variables;
-
-    rootVariables.forEach((variable) => {
-      let value;
-      // Always convert to HEX (this assumes you want HEX for all variables)
-      value = rgbaToHex(variable.rgba); // Convert to HEX format
-
-      cssString += `--${variable.name}: ${value};\n`;
-    });
-  });
-
-  // Update the CSS output display
-  outputContainer.textContent = cssString;
-}
-  
     // Initialize by displaying collection options and rendering the table & CSS
     function initialize(collections) {
       displayCollectionOptions(collections);
       updateVariableTable();
       updateCSSOutput();
     }
+
+async function getAllVariables() {
+  const colorVars = await figma.getLocalVariablesAsync("COLOR");
+  const numberVars = await figma.getLocalVariablesAsync("FLOAT");
+  const stringVars = await figma.getLocalVariablesAsync("STRING");
+  const booleanVars = await figma.getLocalVariablesAsync("BOOLEAN");
+
+  const allVars = [...colorVars, ...numberVars, ...stringVars, ...booleanVars];
+
+  console.log("🔍 ALL VARIABLES:", JSON.stringify(allVars, null, 2));
+
+  return allVars;
+}
   
-    // Update the function to use the selected color format
-  function convertToCSS(variables) {
+// Update the function to use the selected color format
+function convertToCSS(variables) {
+  console.log("🔍 RAW VARIABLES FROM FIGMA:", JSON.stringify(variables, null, 2));
+
   const groupedByCollection = {};
 
-  // Group variables by collection and mode
   variables.forEach((variable) => {
     const formattedName = formatVariableName(variable.name);
     if (!groupedByCollection[variable.collection]) {
@@ -588,13 +482,19 @@ function updateCSSOutput() {
     }
 
     let value;
+
     if (variable.aliasName) {
       value = `var(--${formatVariableName(variable.aliasName)})`;
+    } else if (variable.rgba) {
+      value = rgbaToHex(variable.rgba);
     } else {
-      value = rgbaToHex(variable.rgba); // Convert to HEX by default
+      value = variable.value !== undefined ? variable.value : "/* value is undefined */";
     }
+
     groupedByCollection[variable.collection][variable.mode][formattedName] = value;
   });
+
+  console.log("📂 Grouped variables by collection and mode:", groupedByCollection);
 
   // Ensure selected collections exist
   const rootCollection = collections.find((c) => c.id === selectedRootCollection);
@@ -606,7 +506,6 @@ function updateCSSOutput() {
     return;
   }
 
-  // Ensure the root collection has variables
   const rootVariables = groupedByCollection[rootCollection.name] || {};
   const rootModes = Object.keys(rootVariables);
   if (!rootModes.length) {
@@ -621,7 +520,6 @@ function updateCSSOutput() {
   }
   cssString += `}\n\n`;
 
-  // Ensure the theme collection has variables
   const themeVariables = groupedByCollection[themeCollection.name];
   if (!themeVariables) {
     console.warn(`No variables found for theme collection: ${themeCollection.name}`);
@@ -629,14 +527,14 @@ function updateCSSOutput() {
   }
 
   Object.keys(themeVariables).forEach((mode) => {
-    cssString += `[data-theme="${mode.toLowerCase()}"] {\n`;
+    const formattedMode = mode.toLowerCase().replace(/\s+/g, "-");
+    cssString += `[data-theme="${formattedMode}"] {\n`;
     for (const [name, value] of Object.entries(themeVariables[mode])) {
       cssString += `  --${name.toLowerCase().replace(/\s+/g, "-")}: ${value};\n`;
     }
     cssString += `}\n\n`;
   });
 
-  // Ensure the generated CSS is displayed inside a <pre> element
   let cssOutput = document.querySelector(".css-output");
   if (!cssOutput) {
     cssOutput = document.createElement("pre");
@@ -644,7 +542,6 @@ function updateCSSOutput() {
   }
   cssOutput.textContent = cssString;
 
-  // Move it to be after the Convert to CSS button
   const convertToCSSButton = document.getElementById("convertToCSSButton");
   if (convertToCSSButton) {
     convertToCSSButton.insertAdjacentElement("afterend", cssOutput);
@@ -688,7 +585,7 @@ function displayRawVariablesTable(variables, allModes) {
     // Create a span element to show the variable count
     const variableCounter = document.createElement("span");
     variableCounter.classList.add("variable-counter");
-    variableCounter.textContent = ` (${uniqueVariableNames.size} variables`; // Count unique variable names
+    variableCounter.textContent = ` ${uniqueVariableNames.size} variables`; // Count unique variable names
     collectionHeader.appendChild(variableCounter);
 
     // Add the collection label, collection name, and variable counter to the <h3> element
@@ -798,36 +695,27 @@ function displayRawVariablesTable(variables, allModes) {
 
 }
 
-document.querySelectorAll(".recheckButton").forEach(button => {
-    button.addEventListener("click", () => {
-        recheckCollections();
-    });
-});
-
-// Function to send request for collections
-function recheckCollections() {
-      parent.postMessage({ pluginMessage: { type: "get-collections" } }, "*");
-  }
-
 function updateUI() {
     const pluginUI = document.getElementById("pluginUI");
-    const noCollectionsMessage = document.getElementById("noCollectionsMessage");
 
     if (collections.length > 0) {
         pluginUI.style.display = "block";
-        noCollectionsMessage.style.display = "none";
     } else {
         pluginUI.style.display = "none";
-        noCollectionsMessage.style.display = "block";
     }
 }
 
 // Handle plugin messages
-function handlePluginMessage(msg) {
+async function handlePluginMessage(msg) {
     if (msg.type === "collections") {
         collections = msg.collections;
         updateUI();
         displayCollectionOptions(collections);
+    }
+
+    if (msg.type === "scan-results") {
+        scannedVariables = await getAllVariables();
+        displayRawVariablesTable(scannedVariables, []);
     }
 }
 
@@ -838,11 +726,21 @@ window.onload = () => {
 };
 
 // Initial requests
-window.onload = () => {
-  parent.postMessage({ pluginMessage: { type: "get-collections" } }, "*");
-  parent.postMessage({ pluginMessage: { type: "scan-file" } }, "*");
+window.onload = async () => {
+    parent.postMessage({ pluginMessage: { type: "get-collections" } }, "*");
+    parent.postMessage({ pluginMessage: { type: "scan-file" } }, "*");
 
-  window.onmessage = (event) => handlePluginMessage(event.data.pluginMessage);
+    // Get all local variables and process them
+    const allVariables = await getAllVariables();
+    scannedVariables = allVariables.map(variable => ({
+        name: variable.name || "Unnamed Variable",
+        value: variable.value || variable.rgba || "No Value",
+        type: variable.resolvedType || "Unknown Type",
+        collection: variable.variableCollectionId || "No Collection",
+        aliasName: variable.aliasName || null
+    }));
+
+    displayRawVariablesTable(scannedVariables, []);
 };
   
   function inMessage(msg) {
@@ -854,10 +752,8 @@ window.onload = () => {
 
       if (collections.length === 0) {
         pluginUI.style.display = "none";
-        noCollectionsMessage.style.display = "block";
       } else {
         pluginUI.style.display = "block";
-        noCollectionsMessage.style.display = "none";
         displayCollectionOptions(collections);
       }
     }
@@ -887,6 +783,8 @@ window.onload = () => {
       window.onmessage = (event) => 
       inMessage(event.data.pluginMessage);
     };
+
   </script>
+
 </body>
 </html>
